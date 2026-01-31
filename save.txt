@@ -1,0 +1,72 @@
+-- FE Teleport Place GUI (Executor Script)
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- UI
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "TeleportPlaceGUI"
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 260, 0, 150)
+frame.Position = UDim2.new(0.5, -130, 0.5, -75)
+frame.BackgroundColor3 = Color3.fromRGB(25,25,25)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Text = "Saved Teleport"
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.new(1,1,1)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+
+local status = Instance.new("TextLabel", frame)
+status.Size = UDim2.new(1, -20, 0, 30)
+status.Position = UDim2.new(0, 10, 0, 35)
+status.BackgroundTransparency = 1
+status.Text = "No saved spot"
+status.TextColor3 = Color3.fromRGB(200,200,200)
+status.Font = Enum.Font.Gotham
+status.TextScaled = true
+
+local saveBtn = Instance.new("TextButton", frame)
+saveBtn.Size = UDim2.new(1, -20, 0, 32)
+saveBtn.Position = UDim2.new(0, 10, 0, 70)
+saveBtn.Text = "Save Spot"
+saveBtn.Font = Enum.Font.GothamBold
+saveBtn.TextScaled = true
+saveBtn.BackgroundColor3 = Color3.fromRGB(60,120,255)
+saveBtn.TextColor3 = Color3.new(1,1,1)
+
+local tpBtn = Instance.new("TextButton", frame)
+tpBtn.Size = UDim2.new(1, -20, 0, 32)
+tpBtn.Position = UDim2.new(0, 10, 0, 110)
+tpBtn.Text = "Teleport Back"
+tpBtn.Font = Enum.Font.GothamBold
+tpBtn.TextScaled = true
+tpBtn.BackgroundColor3 = Color3.fromRGB(60,200,120)
+tpBtn.TextColor3 = Color3.new(1,1,1)
+
+-- Logic
+local savedCF
+
+saveBtn.MouseButton1Click:Connect(function()
+	local char = player.Character
+	if char and char:FindFirstChild("HumanoidRootPart") then
+		savedCF = char.HumanoidRootPart.CFrame
+		status.Text = "Spot saved!"
+	end
+end)
+
+tpBtn.MouseButton1Click:Connect(function()
+	local char = player.Character
+	if savedCF and char and char:FindFirstChild("HumanoidRootPart") then
+		char.HumanoidRootPart.CFrame = savedCF
+		status.Text = "Teleported!"
+	else
+		status.Text = "No saved spot"
+	end
+end)
